@@ -1,6 +1,10 @@
 const redux = require('redux')
+const reduxLogger = require('redux-logger')
+
 const createStore = redux.createStore
 const combineReducers  = redux.combineReducers
+const applyMiddleware = redux.applyMiddleware
+const logger = reduxLogger.createLogger()
 
 
 const BUY_CAKE = 'BUY_CAKE' //string constant indicating type of action
@@ -68,11 +72,11 @@ const rootReducer = combineReducers({
 })
 
 //redux store holding the application state
-const store = createStore(rootReducer)
+const store = createStore(rootReducer,applyMiddleware(logger))
 //getState gives the initial state
 console.log('Initial State',store.getState())
 
-const unsubscribe = store.subscribe(() => console.log('Update State',store.getState()))
+const unsubscribe = store.subscribe(() => {})
 
 store.dispatch(buyCake())
 store.dispatch(buyCake())
