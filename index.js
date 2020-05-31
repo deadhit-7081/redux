@@ -1,5 +1,6 @@
 const redux = require('redux')
 const createStore = redux.createStore
+const combineReducers  = redux.combineReducers
 
 
 const BUY_CAKE = 'BUY_CAKE' //string constant indicating type of action
@@ -28,12 +29,15 @@ function buyIcecream()
 }
 
 //Reducer
-const initialState = {
-    numofCakes:10,
-    numofIceCreams:20
+
+const initialCakeState = {
+    numofCakes : 10
+}
+const initialIceCreamState = {
+    numofIceCreams : 20
 }
 
-const reducer = (state = initialState,action) =>{
+const CakeReducer = (state = initialCakeState,action) =>{
     switch(action.type)
     {
         case BUY_CAKE:
@@ -41,6 +45,13 @@ const reducer = (state = initialState,action) =>{
                 ...state,//here it makes copy of state object and only modify the numOfCake
                 numofCakes : state.numofCakes - 1
             }
+        default:
+            return state
+    }
+}
+const IceCreamReducer = (state = initialIceCreamState,action) =>{
+    switch(action.type)
+    {
         case BUY_ICECREAM:
             return{
                 ...state,
@@ -51,8 +62,13 @@ const reducer = (state = initialState,action) =>{
     }
 }
 
+const rootReducer = combineReducers({
+    cake : CakeReducer,
+    iceCream : IceCreamReducer
+})
+
 //redux store holding the application state
-const store = createStore(reducer)
+const store = createStore(rootReducer)
 //getState gives the initial state
 console.log('Initial State',store.getState())
 
